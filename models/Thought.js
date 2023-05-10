@@ -1,5 +1,7 @@
 const { Schema, model } = require('mongoose');
 const reactionSchema = require('./Reaction');
+const formatDate = require('../utils/formatDate');
+
 
 // Schema to create thought model
 const thoughtSchema = new Schema(
@@ -13,7 +15,7 @@ const thoughtSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-
+      get: timestamp => formatDate(timestamp)
     },
     username: {
       type: String,
@@ -30,9 +32,9 @@ const thoughtSchema = new Schema(
 );
 
 thoughtSchema.virtual("reactionCount").get(function () {
-  return this.reaction.length;
+  return this.reactions.length;
 })
 
-const Thought = model('thought', thoughtSchema);
+const Thought = model('Thought', thoughtSchema);
 
 module.exports = Thought;
